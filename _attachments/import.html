@@ -1,0 +1,40 @@
+<html>
+<head>
+    <script src="/_utils/script/jquery.js"></script>
+    <script src="/_utils/script/jquery.couch.js"></script>
+    <script src="d3.v3.min.js"></script>
+</head>
+
+<body>
+
+<script>
+
+    // Adapt the values to your needs
+    var file = "sp500.csv",
+        dbName = "d3couch",
+        docId = "sp500",
+        source = "FocusAndContext";
+
+    d3.csv(file, function(data) {
+
+        var doc = {
+            _id : docId,
+            souce : source,
+            data : data
+            // Add any fields you need
+        };
+
+        $.couch.db(dbName).saveDoc(doc, {
+            success:function (data) {
+                console.log("New doc created");
+            },
+            error:function (status) {
+                console.log("error:", status);
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>

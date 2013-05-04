@@ -79,9 +79,12 @@ var focus = svg.append("g")
 var context = svg.append("g")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
-$.couch.db("d3couch").openDoc("sp500", { success: function(doc) {
-
-  var data = doc.data;
+d3.json("_view/pricetimeseries", function(viewdata) {
+  var data = viewdata["rows"];
+  data.forEach(function(d) {
+    d.date = new Date(d.key);
+    d.price = +d.value;
+  });
 
   data.forEach(function(d) {
     d.date = parseDate(d.date);
@@ -122,9 +125,7 @@ $.couch.db("d3couch").openDoc("sp500", { success: function(doc) {
     .selectAll("rect")
       .attr("y", -6)
       .attr("height", height2 + 7);
-}, error: function(status) {
-  console.error("Doc not found: " + status);
-}});
+});
 
 function brushed() {
   x.domain(brush.empty() ? x2.domain() : brush.extent());

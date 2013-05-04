@@ -86,11 +86,6 @@ d3.json("_view/pricetimeseries", function(viewdata) {
     d.price = +d.value;
   });
 
-  data.forEach(function(d) {
-    d.date = parseDate(d.date);
-    d.price = +d.price;
-  });
-
   x.domain(d3.extent(data.map(function(d) { return d.date; })));
   y.domain([0, d3.max(data.map(function(d) { return d.price; }))]);
   x2.domain(x.domain());
